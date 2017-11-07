@@ -1,0 +1,28 @@
+description = 'The shared API for the application'
+
+buildscript {
+    repositories { jcenter() }
+
+    dependencies {
+        /* Replace "%%VERSION%%" with the version of JRuby/Gradle you wish to
+         * use if you want to use this build.gradle outside of gradleTest
+         */
+        classpath 'com.github.jruby-gradle:jruby-gradle-plugin:1.5.0'
+    }
+}
+apply plugin: "com.github.jruby-gradle.base"
+
+import com.github.jrubygradle.JRubyExec
+
+dependencies {
+}
+
+task testClassLib(type: JRubyExec) {
+    description "Execute our unit test"
+    script "test/LibTest.rb"
+}
+
+task runScript(type: JRubyExec, dependsOn: testClassLib) {
+    description "Execute main ruby programm"
+    script "lib/Lib.rb"
+}
