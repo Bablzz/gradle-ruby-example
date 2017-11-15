@@ -17,12 +17,18 @@ import com.github.jrubygradle.JRubyExec
 dependencies {
 }
 
-task testClassLib(type: JRubyExec) {
-    description "Execute our unit test"
-    script "test/LibTest.rb"
+task checkRealeasenotesRequiredFields(type: JRubyExec) {
+    description "Check releasenotes.txt"
+    script 'check_release_required_fileds.rb'
 }
 
-task runScript(type: JRubyExec, dependsOn: testClassLib) {
-    description "Execute main ruby programm"
-    script "lib/Lib.rb"
+task checkRealeasenotesVersion(type: JRubyExec) {
+    description "Check releasenotes.txt"
+    script 'check_version.rb'
+    scriptArgs '1.1.0'
+}
+
+task run(dependsOn: [checkRealeasenotesVersion, checkRealeasenotesRequiredFields]) {
+    description "Run all tasks"
+    println "Run $checkRealeasenotesVersion.name and $checkRealeasenotesRequiredFields.name tasks"
 }
